@@ -15,14 +15,29 @@
         {% for ticket in status %}
         <tr>
           <th scope="row">{{ ticket.id }}</th>
-          <td>{{ ticket.title }}</td>
+          <td>
+            <a href="{% url 'details' ticket.id %}">
+              {{ ticket.title }}
+            </a>
+          </td>
           <td>
             {% if ticket.user_assigned %}
-            {{ ticket.user_assigned }}
+            <a href="{% url 'profile' ticket.user_assigned %}">
+              {{ ticket.user_assigned }}
+            </a>
             {% else %}
+            -
             {% endif %}
           </td>
-          <td>{{ ticket.user_filed }}</td>
+          <td>
+            {% if ticket.user_filed %}
+            <a href="{% url 'profile' ticket.user_filed %}">
+              {{ ticket.user_filed }}
+            </a>
+            {% else %}
+            -
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </tbody>

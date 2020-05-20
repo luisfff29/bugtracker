@@ -19,7 +19,18 @@ def main(request):
 
 
 def user_profile(request, name):
-    return render(request, 'profile.html')
+    new = Ticket.objects.filter(
+        status='New', user_filed=Author.objects.get(username=name))
+    inprogress = Ticket.objects.filter(
+        status='In Progress', user_filed=Author.objects.get(username=name))
+    done = Ticket.objects.filter(
+        status='Done', user_filed=Author.objects.get(username=name))
+    data = {
+        'new': new,
+        'inprogress': inprogress,
+        'done': done
+    }
+    return render(request, 'profile.html', context=data)
 
 
 def create_ticket(request):
