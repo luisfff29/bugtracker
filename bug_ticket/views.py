@@ -20,7 +20,7 @@ def create_ticket(request):
         if form.is_valid():
             data = form.cleaned_data
             t = Ticket.objects.create(
-                title=data['title'], description=data['description'], user_filed=Author.objects.get(username=request.user.username))
+                title=data['title'], description=data['description'], status='New', user_filed=Author.objects.get(username=request.user.username))
         return HttpResponseRedirect(reverse('details', args=(t.id, )))
 
     form = CreateTicket()
@@ -32,7 +32,8 @@ def invalid_ticket(request):
 
 
 def details(request, id):
-    return render(request, 'details.html')
+    data = Ticket.objects.get(id=id)
+    return render(request, 'details.html', {'data': data})
 
 
 def edit(request, id):
