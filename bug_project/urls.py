@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from bug_ticket.urls import urlpatterns as more_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+urlpatterns += more_urls
