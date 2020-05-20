@@ -21,9 +21,10 @@ class Ticket(models.Model):
     time = models.DateTimeField(default=timezone.now)
     description = models.TextField()
     status = models.CharField(max_length=128, choices=STATUS_CHOICES)
+    # From https://stackoverflow.com/questions/29691116/django-1-7-add-or-change-a-related-name-argument-to-the-definition-for
     user_filed = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='filed')
     user_assigned = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='assigned')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='assigned', null=True)
     user_completed = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='completed')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='completed', null=True)
