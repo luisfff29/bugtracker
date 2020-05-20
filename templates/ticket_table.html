@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<div class="card shadow my-4">
+  <div class="card-body">
+    <h5 class="card-title h2">{{ header }}</h5>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+          <th scope="col">Assigned to</th>
+          <th scope="col">Reported by</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ticket in status %}
+        <tr>
+          <th scope="row">{{ ticket.id }}</th>
+          <td>{{ ticket.title }}</td>
+          <td>
+            {% if ticket.user_assigned %}
+            {{ ticket.user_assigned }}
+            {% else %}
+            {% endif %}
+          </td>
+          <td>{{ ticket.user_filed }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

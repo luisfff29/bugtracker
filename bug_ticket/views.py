@@ -7,7 +7,15 @@ from django.http import HttpResponseRedirect
 
 # Create your views here.
 def main(request):
-    return render(request, 'main.html')
+    new = Ticket.objects.filter(status='New')
+    inprogress = Ticket.objects.filter(status='In Progress')
+    done = Ticket.objects.filter(status='Done')
+    data = {
+        'new': new,
+        'inprogress': inprogress,
+        'done': done
+    }
+    return render(request, 'main.html', context=data)
 
 
 def user_profile(request, name):
@@ -28,7 +36,8 @@ def create_ticket(request):
 
 
 def invalid_ticket(request):
-    return render(request, 'invalid_ticket.html')
+    invalid = Ticket.objects.filter(status='Invalid')
+    return render(request, 'invalid_ticket.html', {'invalid': invalid})
 
 
 def details(request, id):
