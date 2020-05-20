@@ -11,14 +11,13 @@
   </head>
 
   <body>
-    <nav class="nav">
+    <nav class="nav mx-2 mb-3">
       <a class="nav-link active" href="#">Home</a>
       <a class="nav-link btn btn-primary" href="#">Link</a>
       <a class="nav-link btn btn-danger ml-auto" href="#" tabindex="-1" aria-disabled="true">Right</a>
     </nav>
     <div class='container'>
       {% block body_block %}
-      <h1>This is the base!</h1>
       {% endblock  %}
     </div>
   </body>
