@@ -25,6 +25,6 @@ class Ticket(models.Model):
     user_filed = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='filed')
     user_assigned = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='assigned', null=True)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='assigned', null=True, blank=True)
     user_completed = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='completed', null=True)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='completed', null=True, blank=True)

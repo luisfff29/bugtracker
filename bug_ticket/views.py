@@ -1,5 +1,5 @@
 from django.shortcuts import render, reverse
-from bug_ticket.forms import CreateTicket
+from bug_ticket.forms import CreateTicket, UpdateTicket
 from bug_ticket.models import Author, Ticket
 
 from django.http import HttpResponseRedirect
@@ -63,18 +63,19 @@ def edit(request, id):
     ticket = Ticket.objects.get(id=id)
 
     if request.method == 'POST':
-        form = CreateTicket(request.POST)
+        form = UpdateTicket(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             ticket.title = data['title']
             ticket.description = data['description']
+            ticket.user_assigned = data['user_assigned']
+            ticket.user_completed = data['user_completed']
             ticket.save()
         return HttpResponseRedirect(reverse('details', args=(id, )))
 
-    form = CreateTicket(initial={
+    form = UpdateTicket(initial={
         'title': ticket.title,
         'description': ticket.description,
-        'status': ticket.status
     })
     return render(request, 'edit.html', {'form': form})
 
