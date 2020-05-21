@@ -19,16 +19,19 @@ def main(request):
 
 
 def user_profile(request, name):
-    new = Ticket.objects.filter(
+    filed = Ticket.objects.filter(
         status='New', user_filed=Author.objects.get(username=name))
-    inprogress = Ticket.objects.filter(
-        status='In Progress', user_filed=Author.objects.get(username=name))
-    done = Ticket.objects.filter(
-        status='Done', user_filed=Author.objects.get(username=name))
+    assigned = Ticket.objects.filter(
+        status='In Progress',
+        user_assigned=Author.objects.get(username=name))
+    completed = Ticket.objects.filter(
+        status='Done',
+        user_filed=Author.objects.get(username=name)) | Ticket.objects.filter(
+            status='In Progress', user_assigned=Author.objects.get(username=name))
     data = {
-        'new': new,
-        'inprogress': inprogress,
-        'done': done
+        'filed': filed,
+        'assigned': assigned,
+        'completed': completed
     }
     return render(request, 'profile.html', context=data)
 
@@ -57,7 +60,23 @@ def details(request, id):
 
 
 def edit(request, id):
-    return render(request, 'edit.html')
+    ticket = Ticket.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = CreateTicket(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            ticket.title = data['title']
+            ticket.description = data['description']
+            ticket.save()
+        return HttpResponseRedirect(reverse('details', args=(id, )))
+
+    form = CreateTicket(initial={
+        'title': ticket.title,
+        'description': ticket.description,
+        'status': ticket.status
+    })
+    return render(request, 'edit.html', {'form': form})
 
 
 def login_view(request):

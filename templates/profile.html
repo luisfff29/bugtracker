@@ -2,8 +2,8 @@
 {% extends 'base.html' %}
 {% block body_block %}
 <h1>User Profile</h1>
-{% include 'ticket_table.html' with header='My New Tickets' status=new %}
-{% include 'ticket_table.html' with header='My In Progress Tickets' status=inprogress %}
-{% include 'ticket_table.html' with header='My Done Tickets' status=done %}
+{% include 'ticket_table.html' with header='Field Tickets' status=new %}
+{% include 'ticket_table.html' with header='Assigned and In Progress Tickets' status=inprogress %}
+{% include 'ticket_table.html' with header='Completed Tickets' status=done %}
 
 {% endblock %}
