@@ -12,7 +12,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a class="dropdown-item" href="{% url 'edit' data.id %}">Edit</a>
-          <a class="dropdown-item" href="#">Assign ticket to you</a>
+          <a class="dropdown-item" href="/action/{{ data.id }}?value=assign">Assign ticket to me</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Mark ticket as invalid</a>
         </div>
@@ -27,6 +27,13 @@
             <li class="list-group-item bg-light"><b>Status:</b> {{ data.status }}</li>
             <li class="list-group-item bg-light"><b>Submitted on:</b> {{ data.time }}</li>
             <li class="list-group-item bg-light"><b>Reported by:</b> {{ data.user_filed }}</li>
+            <li class="list-group-item bg-light">
+              {% if data.status == 'In Progress' %}
+              <b>Assigned to:</b> {{ data.user_assigned }}
+              {% elif data.status == 'Done' %}
+              <b>Completed by:</b> {{ data.user_completed }}
+              {% endif %}
+            </li>
           </ul>
         </div>
       </div>
@@ -35,7 +42,6 @@
         <p class="card-text">{{ data.description }}
       </div>
     </div>
-    </p>
   </div>
 </div>
 {% endblock %}

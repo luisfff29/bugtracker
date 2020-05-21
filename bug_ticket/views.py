@@ -68,16 +68,36 @@ def edit(request, id):
             data = form.cleaned_data
             ticket.title = data['title']
             ticket.description = data['description']
-            ticket.user_assigned = data['user_assigned']
-            ticket.user_completed = data['user_completed']
+            ticket.status = 'New'
+            if data['user_assigned']:
+                ticket.status = 'In Progress'
+                ticket.user_assigned = data['user_assigned']
+                ticket.user_completed = None
+            if data['user_completed']:
+                ticket.status = 'Done'
+                ticket.user_assigned = None
+                ticket.user_completed = data['user_completed']
             ticket.save()
         return HttpResponseRedirect(reverse('details', args=(id, )))
 
     form = UpdateTicket(initial={
         'title': ticket.title,
         'description': ticket.description,
+        'user_assigned': ticket.user_assigned,
+        'user_completed': ticket.user_completed,
     })
     return render(request, 'edit.html', {'form': form})
+
+
+def action(request, id):
+    value = request.GET['value']
+    if value == 'assign':
+        ticket = Ticket.objects.get(id=id)
+        ticket.status = 'In Progress'
+        ticket.user_assigned = Author.objects.get(
+            username=request.user.username)
+        ticket.save()
+        return HttpResponseRedirect(reverse('details', args=(id, )))
 
 
 def login_view(request):
