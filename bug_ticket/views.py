@@ -26,10 +26,14 @@ def user_profile(request, name):
     completed = Ticket.objects.filter(
         status='Done',
         user_completed=Author.objects.get(username=name))
+    usr = Author.objects.get(username=name)
+    len_tickets_reported = len(Ticket.objects.filter(user_filed=usr))
     data = {
         'filed': filed,
         'assigned': assigned,
-        'completed': completed
+        'completed': completed,
+        'usr': usr,
+        'num': len_tickets_reported
     }
     return render(request, 'profile.html', context=data)
 

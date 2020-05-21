@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
 {% block body_block %}
-<h1>User Profile</h1>
+<h1>{{ usr.username }}</h1>
+<h4 class='text-muted'>e-mail: {{ usr.email }}</h4>
+<h4 class='text-muted'># files reported: {{ num }}</h4>
 {% include 'ticket_table.html' with header='Field Tickets' status=filed %}
 {% include 'ticket_table.html' with header='Assigned Tickets' status=assigned %}
 {% include 'ticket_table.html' with header='Completed Tickets' status=completed %}
