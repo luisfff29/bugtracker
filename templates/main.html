@@ -6,4 +6,6 @@
 {% include 'ticket_table.html' with header='In Progress Tickets' status=inprogress %}
 {% include 'ticket_table.html' with header='Done Tickets' status=done %}
 
+<a href="{% url 'inv_tickets' %}" class="btn btn-secondary btn-lg btn-block">Invalid tickets</a>
+
 {% endblock %}
