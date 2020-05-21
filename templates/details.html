@@ -11,10 +11,24 @@
           Actions
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% if data.status == 'New' %}
           <a class="dropdown-item" href="{% url 'edit' data.id %}">Edit</a>
+          <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="/action/{{ data.id }}?value=assign">Assign ticket to me</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Mark ticket as invalid</a>
+          <a class="dropdown-item" href="/action/{{ data.id }}?value=invalid">Mark ticket as invalid</a>
+          {% elif data.status == 'In Progress' %}
+          <a class="dropdown-item" href="{% url 'edit' data.id %}">Edit</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/action/{{ data.id }}?value=done">Complete</a>
+          <a class="dropdown-item" href="/action/{{ data.id }}?value=unassign">Return ticket</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/action/{{ data.id }}?value=invalid">Mark ticket as invalid</a>
+          {% elif data.status == 'Done' %}
+          <a class="dropdown-item" href="/action/{{ data.id }}?value=invalid">Mark ticket as invalid</a>
+          {% elif data.status == 'Invalid' %}
+          <p class="dropdown-item">No actions</p>
+          {% endif %}
         </div>
       </div>
     </h1>

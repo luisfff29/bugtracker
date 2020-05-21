@@ -2,7 +2,7 @@ from django.urls import path
 from bug_ticket import views
 
 urlpatterns = [
-    path('', views.main),
+    path('', views.main, name='home'),
     path('ticket/<int:id>/', views.details, name='details'),
     path('ticket/submit/', views.create_ticket),
     path('ticket/invalid/', views.invalid_ticket),

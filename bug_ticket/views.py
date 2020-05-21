@@ -22,12 +22,10 @@ def user_profile(request, name):
     filed = Ticket.objects.filter(
         status='New', user_filed=Author.objects.get(username=name))
     assigned = Ticket.objects.filter(
-        status='In Progress',
         user_assigned=Author.objects.get(username=name))
     completed = Ticket.objects.filter(
         status='Done',
-        user_filed=Author.objects.get(username=name)) | Ticket.objects.filter(
-            status='In Progress', user_assigned=Author.objects.get(username=name))
+        user_completed=Author.objects.get(username=name))
     data = {
         'filed': filed,
         'assigned': assigned,
@@ -91,11 +89,30 @@ def edit(request, id):
 
 def action(request, id):
     value = request.GET['value']
+    ticket = Ticket.objects.get(id=id)
     if value == 'assign':
-        ticket = Ticket.objects.get(id=id)
         ticket.status = 'In Progress'
         ticket.user_assigned = Author.objects.get(
             username=request.user.username)
+        ticket.save()
+        return HttpResponseRedirect(reverse('details', args=(id, )))
+    if value == 'unassign':
+        ticket.status = 'New'
+        ticket.user_assigned = None
+        ticket.user_completed = None
+        ticket.save()
+        return HttpResponseRedirect(reverse('details', args=(id, )))
+    if value == 'done':
+        ticket.status = 'Done'
+        ticket.user_assigned = None
+        ticket.user_completed = Author.objects.get(
+            username=request.user.username)
+        ticket.save()
+        return HttpResponseRedirect(reverse('details', args=(id, )))
+    if value == 'invalid':
+        ticket.status = 'Invalid'
+        ticket.user_assigned = None
+        ticket.user_completed = None
         ticket.save()
         return HttpResponseRedirect(reverse('details', args=(id, )))
 
