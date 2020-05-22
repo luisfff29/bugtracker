@@ -17,3 +17,11 @@ class UpdateTicket(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=128)
     password = forms.CharField(widget=forms.PasswordInput())
+
+
+class CreateAuthor(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta():
+        model = Author
+        fields = ['username', 'password', 'is_staff', 'is_superuser']

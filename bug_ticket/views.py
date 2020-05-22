@@ -1,5 +1,5 @@
 from django.shortcuts import render, reverse
-from bug_ticket.forms import CreateTicket, UpdateTicket, LoginForm
+from bug_ticket.forms import CreateTicket, UpdateTicket, LoginForm, CreateAuthor
 from bug_ticket.models import Author, Ticket
 from django.contrib.auth import login, logout, authenticate
 
@@ -143,4 +143,17 @@ def logout_view(request):
 
 
 def signup_view(request):
-    return render(request, 'signup.html')
+    if request.method == 'POST':
+        form = CreateAuthor(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            Author.objects.create_user(
+                username=data['username'],
+                password=data['password'],
+                is_staff=data['is_staff'],
+                is_superuser=data['is_superuser']
+            )
+        return HttpResponseRedirect(reverse('login'))
+
+    form = CreateAuthor()
+    return render(request, 'signup.html', {'form': form})

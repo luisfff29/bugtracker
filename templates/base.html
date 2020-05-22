@@ -14,11 +14,14 @@
     <nav class="nav mx-2 my-3">
       <div class='container d-flex justify-content-between'>
         <div>
-          <a class="active mr-5" href="{% url 'home' %}">Home</a>
+          <a class="active mr-3" href="{% url 'home' %}">Home</a>
           {% if request.path != '/ticket/submit/' %}
-          <a class="btn btn-success" href="{% url 'submit' %}">Submit ticket</a>
+          <a class="btn btn-success mr-3" href="{% url 'submit' %}">Submit ticket</a>
+          {% endif %}
+          {% if request.user.is_superuser %}
+          <a class="btn btn-info" href="{% url 'signup' %}">Create Author</a>
+          {% endif %}
         </div>
-        {% endif %}
         {% if request.user.is_authenticated %}
         <div>
           <span>Welcome {{ request.user.username }}</span>
@@ -26,8 +29,8 @@
           {% else %}
           <a class="btn btn-primary" href="{% url 'login' %}">Log in</a>
         </div>
+        {% endif %}
       </div>
-      {% endif %}
     </nav>
     <div class='container'>
       {% block body_block %}
