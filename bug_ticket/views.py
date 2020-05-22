@@ -58,6 +58,8 @@ def create_ticket(request):
 
 @login_required(login_url='/login/')
 def invalid_ticket(request):
+    if not request.user.is_superuser:
+        return render(request, 'error.html')
     invalid = Ticket.objects.filter(status='Invalid')
     return render(request, 'invalid_ticket.html', {'invalid': invalid})
 
@@ -153,6 +155,8 @@ def logout_view(request):
 
 @login_required(login_url='/login/')
 def signup_view(request):
+    if not request.user.is_superuser:
+        return render(request, 'error.html')
     if request.method == 'POST':
         form = CreateAuthor(request.POST)
         if form.is_valid():

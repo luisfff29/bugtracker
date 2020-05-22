@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block body_block %}
+<div class="col-md-5 p-lg-5 mx-auto my-5">
+  <h1 class="display-4 font-weight-normal">ERROR <i class="material-icons align-bottom"
+      style='color: red; font-size: 4rem'>report</i></h1>
+  <p class="lead font-weight-normal">You don't have permission to access this page.</p>
+  <a class="btn btn-outline-secondary" href="{% url 'home' %}">Go back to Home</a>
+</div>
+{% endblock %}
