@@ -23,8 +23,7 @@ def main(request):
 
 @login_required(login_url='/login/')
 def user_profile(request, name):
-    filed = Ticket.objects.filter(
-        status='New', user_filed=Author.objects.get(username=name))
+    filed = Ticket.objects.filter(user_filed=Author.objects.get(username=name))
     assigned = Ticket.objects.filter(
         user_assigned=Author.objects.get(username=name))
     completed = Ticket.objects.filter(
