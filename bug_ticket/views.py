@@ -1,6 +1,7 @@
 from django.shortcuts import render, reverse
-from bug_ticket.forms import CreateTicket, UpdateTicket
+from bug_ticket.forms import CreateTicket, UpdateTicket, LoginForm
 from bug_ticket.models import Author, Ticket
+from django.contrib.auth import login, logout, authenticate
 
 from django.http import HttpResponseRedirect
 
@@ -122,7 +123,18 @@ def action(request, id):
 
 
 def login_view(request):
-    return render(request, 'login.html')
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            usuario = authenticate(
+                request, username=data['username'], password=data['password'])
+            if usuario:
+                login(request, usuario)
+                return HttpResponseRedirect(request.GET.get('next', reverse('home')))
+
+    form = LoginForm()
+    return render(request, 'login.html', {'form': form})
 
 
 def signup_view(request):
