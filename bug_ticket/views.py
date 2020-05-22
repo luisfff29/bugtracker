@@ -2,11 +2,13 @@ from django.shortcuts import render, reverse
 from bug_ticket.forms import CreateTicket, UpdateTicket, LoginForm, CreateAuthor
 from bug_ticket.models import Author, Ticket
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponseRedirect
 
 
 # Create your views here.
+@login_required(login_url='/login/')
 def main(request):
     new = Ticket.objects.filter(status='New')
     inprogress = Ticket.objects.filter(status='In Progress')
@@ -19,6 +21,7 @@ def main(request):
     return render(request, 'main.html', context=data)
 
 
+@login_required(login_url='/login/')
 def user_profile(request, name):
     filed = Ticket.objects.filter(
         status='New', user_filed=Author.objects.get(username=name))
@@ -39,6 +42,7 @@ def user_profile(request, name):
     return render(request, 'profile.html', context=data)
 
 
+@login_required(login_url='/login/')
 def create_ticket(request):
     if request.method == 'POST':
         form = CreateTicket(request.POST)
@@ -52,16 +56,19 @@ def create_ticket(request):
     return render(request, 'create_ticket.html', {'form': form})
 
 
+@login_required(login_url='/login/')
 def invalid_ticket(request):
     invalid = Ticket.objects.filter(status='Invalid')
     return render(request, 'invalid_ticket.html', {'invalid': invalid})
 
 
+@login_required(login_url='/login/')
 def details(request, id):
     data = Ticket.objects.get(id=id)
     return render(request, 'details.html', {'data': data})
 
 
+@login_required(login_url='/login/')
 def edit(request, id):
     ticket = Ticket.objects.get(id=id)
 
@@ -92,6 +99,7 @@ def edit(request, id):
     return render(request, 'edit.html', {'form': form})
 
 
+@login_required(login_url='/login/')
 def action(request, id):
     value = request.GET['value']
     ticket = Ticket.objects.get(id=id)
@@ -137,11 +145,13 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
+@login_required(login_url='/login/')
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('home'))
 
 
+@login_required(login_url='/login/')
 def signup_view(request):
     if request.method == 'POST':
         form = CreateAuthor(request.POST)
