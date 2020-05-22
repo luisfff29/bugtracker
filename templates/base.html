@@ -12,11 +12,22 @@
 
   <body>
     <nav class="nav mx-2 my-3">
-      <a class="nav-link active" href="{% url 'home' %}">Home</a>
-      {% if request.path != '/ticket/submit/' %}
-      <a class="nav-link btn btn-primary" href="{% url 'submit' %}">Submit ticket</a>
+      <div class='container d-flex justify-content-between'>
+        <div>
+          <a class="active mr-5" href="{% url 'home' %}">Home</a>
+          {% if request.path != '/ticket/submit/' %}
+          <a class="btn btn-success" href="{% url 'submit' %}">Submit ticket</a>
+        </div>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <div>
+          <span>Welcome {{ request.user.username }}</span>
+          <a class="btn btn-danger ml-2" href="{% url 'logout' %}">Log out</a>
+          {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}">Log in</a>
+        </div>
+      </div>
       {% endif %}
-      <a class="nav-link btn btn-danger ml-auto" href="#" tabindex="-1" aria-disabled="true">Right</a>
     </nav>
     <div class='container'>
       {% block body_block %}

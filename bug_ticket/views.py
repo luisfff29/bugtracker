@@ -137,5 +137,10 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
+
+
 def signup_view(request):
     return render(request, 'signup.html')
